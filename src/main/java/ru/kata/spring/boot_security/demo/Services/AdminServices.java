@@ -30,6 +30,7 @@ public class AdminServices {
 
     @Transactional
     public void createUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         adminRepositories.save(user);
     }
 

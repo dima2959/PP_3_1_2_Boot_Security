@@ -39,10 +39,22 @@
         <div style="color: darkred;font-size: 80%" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     </div>
 
+    <div>
+        <label>Roles:
+            <input type="checkbox" name="roles"
+                   th:each="role : ${roles}"
+                   th:text="${role.name}"
+                   th:value="${role.id}"
+                   th:field="*{roles}"
+                   th:checked="${role.id}"
+            />
+        </label>
+    </div>
+
     <div><input type="submit" value="Изменить"></div>
 </form>
 <hr/>
-<form th:method="delete" th:action="@{admin/{id}(id=${user.getId()})}" th:object="${user}">
+<form th:method="delete" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
     <div>
         <input type="submit" th:value="'Удалить ' + ${user.getName()}">
     </div>

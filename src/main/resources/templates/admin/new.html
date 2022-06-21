@@ -15,7 +15,7 @@
 <div><a href="/admin">Назад</a></div>
 
 <h4>Новый пользователь</h4>
-<form th:method="POST" th:action="@{admin/}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/}" th:object="${user}">
     <div>
         <label for="name">Введите имя:</label>
         <input type="text" th:field="*{name}" id="name">
@@ -32,6 +32,23 @@
         <label for="mail">E-mail:</label>
         <input type="text" th:field="*{mail}" id="mail">
         <div style="color: darkred;font-size: 80%" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></div>
+    </div>
+
+    <div>
+        <label for="password">Пароль:</label>
+        <input type="password" th:field="*{password}" id="password">
+        <div style="color: darkred;font-size: 80%" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </div>
+
+    <div>
+            <label>Roles:
+                <input type="checkbox" name="roles"
+                       th:each="role : ${roles}"
+                       th:text="${role.name}"
+                       th:value="${role.id}"
+                       th:field="*{roles}"
+                />
+            </label>
     </div>
 
     <div><input type="submit" value="Добавить"></div>

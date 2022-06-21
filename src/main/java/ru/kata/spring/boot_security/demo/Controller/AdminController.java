@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.Services.AdminServices;
-
+import ru.kata.spring.boot_security.demo.Services.RoleService;
 
 import javax.validation.Valid;
 
@@ -16,10 +16,12 @@ import javax.validation.Valid;
 public class AdminController {
 
     private final AdminServices adminServices;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(AdminServices adminServices) {
+    public AdminController(AdminServices adminServices, RoleService roleService) {
         this.adminServices = adminServices;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -29,35 +31,40 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    private String newUser(@ModelAttribute("user") User user){
-        return "user/new";
+    private String newUser(@ModelAttribute("user") User user, Model model){
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/new";
     }
 
     @PostMapping("/")
     private String createUser(@ModelAttribute("user") @Valid User user,
-                              BindingResult bindingResult){
+                              BindingResult bindingResult, Model model){
 
-        if(bindingResult.hasErrors()) return "admin/new";
+        if(bindingResult.hasErrors()){
+            model.addAttribute("roles", roleService.getAllRoles());
+            return "admin/new";
+        }
 
         adminServices.createUser(user);
         return "redirect:/admin";
     }
 
-
     @GetMapping("/{id}")
     private String viewUser(@PathVariable int id, Model model){
 
+        model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("user", adminServices.getUser(id));
         return "admin/view";
     }
 
     @PatchMapping("/{id}")
     private String updateUser(@ModelAttribute("user") @Valid User user,
-                              BindingResult bindingResult){
+                              BindingResult bindingResult,Model model){
 
         if(!bindingResult.hasErrors())
             adminServices.updateUser(user);
 
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/view";
     }
 
