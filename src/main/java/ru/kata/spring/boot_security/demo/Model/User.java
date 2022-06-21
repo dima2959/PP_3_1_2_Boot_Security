@@ -33,6 +33,7 @@ public class User {
     private String mail;
 
     @Column(name = "password")
+    @NotNull
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
