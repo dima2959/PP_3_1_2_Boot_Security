@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:include="fragments/header.html :: header"></div>
+<h4>Пользователи</h4>
+
+<div th:each="user:${users}">
+<li><a th:text="${user.getName() + ', ' + user.getAge() + ', ' + user.getMail()}"
+       th:href="@{admin/{id}(id=${user.getId()})}"></a></li>
+</div>
+
+<hr/>
+
+<div>
+    <a href="/new" >Добавить пользователя</a>
+</div>
+
+</body>
+</html>

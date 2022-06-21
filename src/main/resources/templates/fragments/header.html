@@ -1,0 +1,11 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+    <div style="padding: 10px;background-color: darkgray;">
+        <form th:action="@{/logout}" method="post">
+            <div></div>
+            <input type="submit" value="Logout">
+        </form>
+
+    </div>
+</div>
+</html>
