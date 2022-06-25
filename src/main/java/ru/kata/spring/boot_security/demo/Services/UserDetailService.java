@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.Services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,6 @@ public class UserDetailService implements UserDetailsService {
 
     private final AdminRepositories adminRepositories;
 
-    @Autowired
     public UserDetailService(AdminRepositories adminRepositories) {
         this.adminRepositories = adminRepositories;
     }
