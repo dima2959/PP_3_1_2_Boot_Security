@@ -1,11 +1,12 @@
 package ru.kata.spring.boot_security.demo.Security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.kata.spring.boot_security.demo.Model.User;
 
 import java.util.Collection;
 
-public class UserDetailsImpl implements org.springframework.security.core.userdetails.UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private User user;
 
