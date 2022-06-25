@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.Services.AdminServices;
 import ru.kata.spring.boot_security.demo.Services.RoleService;
+import ru.kata.spring.boot_security.demo.Services.RoleServiceImpl;
 
 import javax.validation.Valid;
 
@@ -18,8 +18,7 @@ public class AdminController {
     private final AdminServices adminServices;
     private final RoleService roleService;
 
-    @Autowired
-    public AdminController(AdminServices adminServices, RoleService roleService) {
+    public AdminController(AdminServices adminServices, RoleServiceImpl roleService) {
         this.adminServices = adminServices;
         this.roleService = roleService;
     }
@@ -30,13 +29,7 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping("/new")
-    private String newUser(@ModelAttribute("user") User user, Model model){
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "admin/new";
-    }
-
-    @PostMapping("/")
+    @PostMapping
     private String createUser(@ModelAttribute("user") @Valid User user,
                               BindingResult bindingResult, Model model){
 
@@ -47,6 +40,12 @@ public class AdminController {
 
         adminServices.createUser(user);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/new")
+    private String newUser(@ModelAttribute("user") User user, Model model){
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/new";
     }
 
     @GetMapping("/{id}")
