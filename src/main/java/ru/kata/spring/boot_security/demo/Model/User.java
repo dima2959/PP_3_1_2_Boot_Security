@@ -4,9 +4,9 @@ package ru.kata.spring.boot_security.demo.Model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -29,7 +29,7 @@ public class User {
 
     @Column(name = "mail")
     @NotNull
-    @Pattern(regexp = "([A-z0-9_.-]+)@([A-z0-9_.-]+).([A-z]{2,10})", message = "Введите корректный E-mail")
+    @Email(message = "Введите корректный E-mail")
     private String mail;
 
     @Column(name = "password")
