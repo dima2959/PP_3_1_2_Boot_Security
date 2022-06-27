@@ -47,5 +47,10 @@ public class AdminServicesImpl implements AdminServices {
         adminRepositories.deleteById(id);
     }
 
+    @Override
+    public Optional<User> findByName(String name) {
+        return adminRepositories.findByName(name);
+    }
+
 
 }
