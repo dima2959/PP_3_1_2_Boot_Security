@@ -36,7 +36,7 @@ public class User {
     @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
@@ -50,6 +50,12 @@ public class User {
         this.name = name;
         this.age = age;
         this.mail = mail;
+    }
+
+    public User(String name, String password, List<Role> roles){
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {

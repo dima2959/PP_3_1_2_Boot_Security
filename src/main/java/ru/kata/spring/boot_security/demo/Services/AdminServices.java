@@ -16,7 +16,7 @@ public interface AdminServices {
 
     void deleteUser(int id);
 
-    User findByName(String username);
+
 
 
 }

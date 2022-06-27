@@ -48,9 +48,4 @@ public class AdminServicesImpl implements AdminServices {
     }
 
 
-    public User findByName(String username){
-        Optional<User> user =  adminRepositories.findByName(username);
-        return user.orElse(null);
-    }
-
 }
