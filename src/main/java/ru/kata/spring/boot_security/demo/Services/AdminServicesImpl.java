@@ -1,10 +1,10 @@
 package ru.kata.spring.boot_security.demo.Services;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.Repositories.AdminRepositories;
+import ru.kata.spring.boot_security.demo.configs.EncoderConfig;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class AdminServicesImpl implements AdminServices {
 
     private final AdminRepositories adminRepositories;
-    private final PasswordEncoder passwordEncoder;
+    private final EncoderConfig encoderConfig;
 
-    public AdminServicesImpl(AdminRepositories adminRepositories, PasswordEncoder passwordEncoder) {
+    public AdminServicesImpl(AdminRepositories adminRepositories, EncoderConfig encoderConfig) {
         this.adminRepositories = adminRepositories;
-        this.passwordEncoder = passwordEncoder;
+        this.encoderConfig = encoderConfig;
     }
 
     public List<User> getAllUsers(){
@@ -27,7 +27,7 @@ public class AdminServicesImpl implements AdminServices {
 
     @Transactional
     public void createUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
         adminRepositories.save(user);
     }
 
@@ -38,13 +38,19 @@ public class AdminServicesImpl implements AdminServices {
 
     @Transactional
     public void updateUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
         adminRepositories.save(user);
     }
 
     @Transactional
     public void deleteUser(int id){
         adminRepositories.deleteById(id);
+    }
+
+
+    public User findByName(String username){
+        Optional<User> user =  adminRepositories.findByName(username);
+        return user.orElse(null);
     }
 
 }
