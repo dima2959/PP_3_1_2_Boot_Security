@@ -1,10 +1,10 @@
-package ru.kata.spring.boot_security.demo.Services;
+package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.Model.User;
-import ru.kata.spring.boot_security.demo.Repositories.AdminRepositories;
+import ru.kata.spring.boot_security.demo.DAO.AdminDAO;
 import ru.kata.spring.boot_security.demo.configs.EncoderConfig;
+import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,43 +13,43 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class AdminServicesImpl implements AdminServices {
 
-    private final AdminRepositories adminRepositories;
+    private final AdminDAO adminDAO;
     private final EncoderConfig encoderConfig;
 
-    public AdminServicesImpl(AdminRepositories adminRepositories, EncoderConfig encoderConfig) {
-        this.adminRepositories = adminRepositories;
+    public AdminServicesImpl(AdminDAO adminDAO, EncoderConfig encoderConfig) {
+        this.adminDAO = adminDAO;
         this.encoderConfig = encoderConfig;
     }
 
     public List<User> getAllUsers(){
-        return adminRepositories.findAll();
+        return adminDAO.getAllUsers();
     }
 
     @Transactional
     public void createUser(User user){
         user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
-        adminRepositories.save(user);
+        adminDAO.createUser(user);
     }
 
     public User getUser(int id){
-       Optional<User> user = adminRepositories.findById(id);
-       return user.orElse(null);
+       User user = adminDAO.getUser(id);
+       return user;
     }
 
     @Transactional
     public void updateUser(User user){
         user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
-        adminRepositories.save(user);
+        adminDAO.updateUser(user);
     }
 
     @Transactional
     public void deleteUser(int id){
-        adminRepositories.deleteById(id);
+        adminDAO.deleteUser(id);
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        return adminRepositories.findByName(name);
+        return adminDAO.findByName(name);
     }
 
 

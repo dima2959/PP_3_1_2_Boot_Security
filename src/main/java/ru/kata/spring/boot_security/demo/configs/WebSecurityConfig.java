@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.kata.spring.boot_security.demo.Services.UserDetailService;
+import ru.kata.spring.boot_security.demo.services.UserDetailService;
 
 @Configuration
 @EnableWebSecurity
@@ -25,8 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
-                .antMatchers("/user").hasAnyRole("USER")
-                .anyRequest().hasAnyRole("ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority ("ROLE_USER","ROLE_ADMIN")
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .anyRequest().hasAuthority("ROLE_ADMIN")
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
