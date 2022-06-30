@@ -32,68 +32,7 @@
                         </li>
                     </ul>
 
-                    <table class="table table-light border">
-                        <tr>
-                            <td class="border border-bottom"><b class="fs-5">Add new user</b></td>
-                        </tr>
-                        <tr>
-                            <td class="bg-white text-center">
 
-                                <form th:method="POST" th:action="@{/admin/}" th:object="${user}">
-                                <div class="row g-2 justify-content-center">
-
-                                    <div class="fw-bold">User name</div>
-                                    <div class="col-sm-5">
-                                        <input  class="form-control" type="text" th:field="*{name}" id="name">
-                                        <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('name')}"
-                                              th:errors="*{name}"></div>
-                                    </div>
-
-                                    <div class="fw-bold">Age</div>
-                                    <div class="col-sm-5">
-                                        <input class="form-control" type="text"
-                                               th:field="*{age}" id="age">
-                                        <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('age')}"
-                                             role="alert" th:errors="*{age}">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="fw-bold">Email</div>
-                                    <div class="col-sm-5">
-                                        <input class="form-control" type="text" th:field="*{mail}" id="mail">
-                                        <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('mail')}"
-                                              th:errors="*{mail}"></div>
-                                    </div>
-
-                                    <div class="fw-bold">Password</div>
-                                    <div class="col-sm-5">
-                                        <input class="form-control" type="password" th:field="*{password}" id="password">
-                                        <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}"
-                                             th:errors="*{password}"></div>
-                                    </div>
-
-                                    <div class="fw-bold">
-                                        Roles
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <select multiple class="form-control" name="roles">
-                                            <option
-                                                   th:each="role : ${roles}"
-                                                   th:text="${role.name}"
-                                                   th:value="${role.id}"
-                                                   th:field="*{roles}"
-                                            />
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <input  class="btn btn-success" type="submit" value="Add new user">
-                                    </div>
-                                </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </table>
                 </div>
             </div>
         </div>

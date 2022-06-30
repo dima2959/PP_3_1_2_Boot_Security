@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="users">
+<table class="table table-light border">
+    <tr>
+        <td class="border border-bottom"><b class="fs-5">All users</b></td>
+    </tr>
+    <tr>
+        <td class="bg-white">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>User name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user:${users}">
+                    <td th:text="${user.getId()}"></td>
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getAge()}"></td>
+                    <td th:text="${user.getMail()}"></td>
+                    <td th:text="${#strings.listJoin(user.getRoles(), ', ')}"></td>
+                    <td>
+                        <input class="btn btn-info" th:data-bs-id="${user.getId()}"
+                               data-bs-toggle="modal" data-bs-target="#editModal"
+                               type="button" value="Edit">
+                    </td>
+                    <td>
+                        <input class="btn btn-danger" th:data-bs-id="${user.getId()+'/delete'}"
+                               th:data-bs-delete="true"
+                               data-bs-toggle="modal" data-bs-target="#editModal"
+                               type="submit" value="Delete">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+</table>
+</div>
+
+
+</html>

@@ -69,12 +69,10 @@ public class AdminRESTController {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         for (FieldError error: fieldErrors){
-            errors.append(error.getField())
-                    .append(" - ")
-                    .append(error.getDefaultMessage());
+            errors.append(error.getDefaultMessage()).append(". ");
         }
 
-        return errors.toString();
+        return errors.toString().trim();
     }
 
     @ExceptionHandler

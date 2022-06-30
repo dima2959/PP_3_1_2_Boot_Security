@@ -22,3 +22,4 @@ public class UserDetailService implements UserDetailsService {
         return new UserSecurityDetails(adminDAO.findByName(username).get());
     }
 }
+

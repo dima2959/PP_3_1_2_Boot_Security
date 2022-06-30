@@ -8,5 +8,4 @@ public interface RoleService {
 
     List<Role> getAllRoles();
 
-    List<Role> getRoleById(int id);
 }

@@ -27,8 +27,9 @@ public class AdminController {
     }
 
     @GetMapping
-    private String index(Model model){
+    private String index(@ModelAttribute("user") User user, Model model){
 
+        model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("authenticationUser", authenticationUser());
         model.addAttribute("users", adminServices.getAllUsers());
         return "admin/index";
