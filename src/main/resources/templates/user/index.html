@@ -1,26 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.css'>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
-<div th:include="fragments/header.html :: header"></div>
-<table>
-    <tr>
-        <td>Пользователь:</td>
-        <td th:text="${user.getName()}"></td>
-    </tr>
-    <tr>
-        <td>E-mail:</td>
-        <td th:text="${user.getMail()}"></td>
-    </tr>
-    <tr>
-        <td>Возраст:</td>
-        <td th:text="${user.getAge()}"></td>
-    </tr>
-</table>
+<div style="height: 100vh;">
+    <div th:include="fragments/header.html :: header"></div>
+    <div class="container-fluid bg-white h-100">
+        <div class="row h-100">
+            <div class="col-sm-2 h-100 d-inline-block p-0">
+
+                <div th:include="fragments/menu.html :: menu"></div>
+
+            </div>
+            <div class="col-sm-10 bg-light h-100">
+                <div class="p-3">
+
+                    <h1>User information page</h1>
+
+                    <table class="table table-light border">
+                        <tr>
+                            <td class="border border-bottom"><b class="fs-5">All users</b></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-white">
+
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>User name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${user.getId()}"></td>
+                                        <td th:text="${user.getName()}"></td>
+                                        <td th:text="${user.getAge()}"></td>
+                                        <td th:text="${user.getMail()}"></td>
+                                        <td th:text="${#strings.listJoin(user.getRoles(), ', ')}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 </body>
 </html>

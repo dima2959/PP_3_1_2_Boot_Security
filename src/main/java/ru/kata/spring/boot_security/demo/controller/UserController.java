@@ -17,6 +17,8 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserSecurityDetails userDetails = (UserSecurityDetails) authentication.getPrincipal();
+
+        model.addAttribute("authenticationUser", userDetails.getUser());
         model.addAttribute("user", userDetails.getUser());
 
         return "user/index";

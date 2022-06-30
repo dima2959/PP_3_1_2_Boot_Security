@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="menu">
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <div th:if="${#httpServletRequest.requestURI.startsWith('/admin')}" class="bg-primary w-100">
+            <div class="p-3">
+                Admin
+            </div>
+        </div>
+        <div th:if="${not #httpServletRequest.requestURI.startsWith('/admin')}" class="w-100">
+            <div class="p-3">
+                <a class="text-decoration-none" th:href="@{/admin}">Admin</a>
+            </div>
+        </div>
+    </div>
+    <div  sec:authorize="hasRole('USER')">
+        <div th:if="${#httpServletRequest.requestURI=='/user'}" class="bg-primary w-100">
+            <div class="p-3">
+                User
+            </div>
+        </div>
+        <div th:if="${#httpServletRequest.requestURI!='/user'}" class="w-100">
+            <div class="p-3">
+                <a class="text-decoration-none" th:href="@{/user}">User</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

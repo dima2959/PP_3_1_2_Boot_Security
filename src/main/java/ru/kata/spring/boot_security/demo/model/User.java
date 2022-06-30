@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,7 @@ public class User {
 
     @Column(name = "mail")
     @NotNull
+    @NotEmpty(message = "Email не должен быть пустым")
     @Email(message = "Введите корректный E-mail")
     private String mail;
 
@@ -105,5 +107,6 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
 
 }

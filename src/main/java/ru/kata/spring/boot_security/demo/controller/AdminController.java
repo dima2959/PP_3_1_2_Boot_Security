@@ -1,10 +1,13 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.security.UserSecurityDetails;
 import ru.kata.spring.boot_security.demo.services.AdminServices;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
@@ -25,6 +28,8 @@ public class AdminController {
 
     @GetMapping
     private String index(Model model){
+
+        model.addAttribute("authenticationUser", authenticationUser());
         model.addAttribute("users", adminServices.getAllUsers());
         return "admin/index";
     }
@@ -34,6 +39,7 @@ public class AdminController {
                               BindingResult bindingResult, Model model){
 
         if(bindingResult.hasErrors()){
+            model.addAttribute("authenticationUser", authenticationUser());
             model.addAttribute("roles", roleService.getAllRoles());
             return "admin/new";
         }
@@ -44,6 +50,8 @@ public class AdminController {
 
     @GetMapping("/new")
     private String newUser(@ModelAttribute("user") User user, Model model){
+
+        model.addAttribute("authenticationUser", authenticationUser());
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin/new";
     }
@@ -67,10 +75,29 @@ public class AdminController {
         return "admin/view";
     }
 
+
     @DeleteMapping("/{id}")
     private String deleteUser(@PathVariable int id){
 
         adminServices.deleteUser(id);
         return "redirect:/admin";
     }
+
+    @GetMapping("/{id}/delete")
+    private String deletePage(@PathVariable int id, Model model){
+
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("user", adminServices.getUser(id));
+        return "admin/delete";
+    }
+
+
+    private User authenticationUser(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserSecurityDetails securityDetails = (UserSecurityDetails) authentication.getPrincipal();
+
+        return securityDetails.getUser();
+    }
+
 }

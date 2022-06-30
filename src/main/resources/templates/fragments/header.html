@@ -1,11 +1,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
-    <div style="padding: 10px;background-color: darkgray;">
-        <form th:action="@{/logout}" method="post">
-            <div></div>
-            <input type="submit" value="Logout">
-        </form>
-
+    <div class="container-fluid bg-dark">
+        <div class="row align-items-start">
+            <div class="col">
+                <div class="p-3 text-white">
+                    <span class="fs-4 fw-weight-bold"><b th:text="${authenticationUser.getMail()}">user@mail.com</b></span>
+                    <span class="fs-4">with roles:</span>
+                    <span class="fs-4 fw-weight-bold" th:text="${#strings.substring(authenticationUser.getRoles().get(0), 5)}">USER</span>
+                </div>
+            </div>
+            <div class="col col-md-auto">
+                <div class="p-3 text-end">
+                        <a class="text-secondary text-decoration-none" href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </html>
