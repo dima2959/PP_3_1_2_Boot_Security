@@ -81,7 +81,6 @@
 </div>
 </div>
 
-
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="width: 600px;">
         <div class="modal-content">
@@ -90,39 +89,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body" style="height: 550px;">
-
                 <iframe id="myIframe" src="" width="100%" height="100%" scrolling="no"></iframe>
-
             </div>
         </div>
     </div>
 </div>
-<script>
-const editModal = document.getElementById('editModal')
 
-editModal.addEventListener('show.bs.modal', function (event) {
-
-    var button = event.relatedTarget
-    var id = button.getAttribute('data-bs-id')
-    var del = button.getAttribute('data-bs-delete')
-
-    if (del){
-        document.getElementById('ModalLabel').innerHTML = 'Delete user';
-    }
-
-    document.getElementById('myIframe').src = 'http://localhost:8080/admin/' + id;
-
-})
-
-editModal.addEventListener('hidden.bs.modal', function (event) {
-    location.reload();
-})
-
-function closeEditModal() {
-    bootstrap.Modal.getInstance(editModal).hide()
-}
-
-</script>
+<script type="text/javascript" src="/js/modal.js"></script>
 
 </body>
 </html>
