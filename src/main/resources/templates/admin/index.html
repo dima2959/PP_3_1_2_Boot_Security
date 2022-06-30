@@ -5,7 +5,6 @@
     <title>Title</title>
     <link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.css'>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
 <body>
 
@@ -59,13 +58,14 @@
                                         <td th:text="${user.getMail()}"></td>
                                         <td th:text="${#strings.listJoin(user.getRoles(), ', ')}"></td>
                                         <td>
-                                            <input class="btn btn-info" th:data-bs-whatever="${user.getId()}"
+                                            <input class="btn btn-info" th:data-bs-id="${user.getId()}"
                                                    data-bs-toggle="modal" data-bs-target="#editModal"
                                                    type="button" value="Edit">
                                         </td>
                                         <td>
-                                            <input class="btn btn-danger" th:data-bs-whatever="${user.getId()}"
-                                                   data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            <input class="btn btn-danger" th:data-bs-id="${user.getId()+'/delete'}"
+                                                   th:data-bs-delete="true"
+                                                   data-bs-toggle="modal" data-bs-target="#editModal"
                                                    type="submit" value="Delete">
                                         </td>
                                     </tr>
@@ -86,27 +86,12 @@
     <div class="modal-dialog modal-dialog-centered" style="width: 600px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                <h5 class="modal-title" id="ModalLabel">Edit user</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body" style="height: 550px;">
 
                 <iframe id="myIframe" src="" width="100%" height="100%" scrolling="no"></iframe>
-
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="width: 600px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete user</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body" style="height: 550px;">
-
-                <iframe id="myIframe2" src="" width="100%" height="100%" scrolling="no"></iframe>
 
             </div>
         </div>
@@ -118,8 +103,14 @@ const editModal = document.getElementById('editModal')
 editModal.addEventListener('show.bs.modal', function (event) {
 
     var button = event.relatedTarget
-    var recipient = button.getAttribute('data-bs-whatever')
-    document.getElementById('myIframe').src = 'http://localhost:8080/admin/' + recipient;
+    var id = button.getAttribute('data-bs-id')
+    var del = button.getAttribute('data-bs-delete')
+
+    if (del){
+        document.getElementById('ModalLabel').innerHTML = 'Delete user';
+    }
+
+    document.getElementById('myIframe').src = 'http://localhost:8080/admin/' + id;
 
 })
 
@@ -129,24 +120,6 @@ editModal.addEventListener('hidden.bs.modal', function (event) {
 
 function CloseEditModal() {
     bootstrap.Modal.getInstance(editModal).hide()
-}
-
-const deleteModal = document.getElementById('deleteModal')
-
-deleteModal.addEventListener('show.bs.modal', function (event) {
-
-    var button = event.relatedTarget
-    var recipient = button.getAttribute('data-bs-whatever')
-    document.getElementById('myIframe2').src = 'http://localhost:8080/admin/' + recipient + '/delete';
-
-})
-
-deleteModal.addEventListener('hidden.bs.modal', function (event) {
-    location.reload();
-})
-
-function CloseDeleteModal() {
-    bootstrap.Modal.getInstance(deleteModal).hide()
 }
 
 </script>

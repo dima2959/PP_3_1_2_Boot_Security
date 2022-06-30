@@ -44,8 +44,8 @@
 
 <form th:method="delete" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
     <div class="modal-footer">
-        <button type="button"  class="btn btn-secondary" onclick="window.parent.CloseDeleteModal()">Close</button>
-        <button type="submit" class="btn btn-danger" onclick="window.parent.CloseDeleteModal()">Delete</button>
+        <button type="button"  class="btn btn-secondary" onclick="window.parent.CloseEditModal()">Close</button>
+        <button type="submit" class="btn btn-danger" onclick="window.parent.CloseEditModal()">Delete</button>
     </div>
 </form>
 
