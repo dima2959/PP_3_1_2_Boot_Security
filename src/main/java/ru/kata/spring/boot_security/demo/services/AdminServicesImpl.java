@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.AdminDAO;
 import ru.kata.spring.boot_security.demo.configs.EncoderConfig;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.util.UserNotCreatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,13 @@ public class AdminServicesImpl implements AdminServices {
 
     @Transactional
     public void createUser(User user){
-        user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
+
+        try {
+            user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
+        }catch (IllegalArgumentException e){
+            throw new UserNotCreatedException("Passport field is not empty");
+        }
+
         adminDAO.createUser(user);
     }
 
@@ -38,7 +45,13 @@ public class AdminServicesImpl implements AdminServices {
 
     @Transactional
     public void updateUser(User user){
-        user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
+
+        if(user.getPassword().equals("")){
+            user.setPassword(adminDAO.getUser(user.getId()).getPassword());
+        }else {
+            user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
+        }
+
         adminDAO.updateUser(user);
     }
 
@@ -51,6 +64,5 @@ public class AdminServicesImpl implements AdminServices {
     public Optional<User> findByName(String name) {
         return adminDAO.findByName(name);
     }
-
 
 }

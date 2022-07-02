@@ -20,5 +20,4 @@ public interface AdminServices {
     Optional<User> findByName(String name);
 
 
-
 }

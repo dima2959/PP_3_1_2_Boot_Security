@@ -25,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/user/**").hasAnyAuthority ("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().hasAuthority("ROLE_ADMIN")
@@ -35,7 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutUrl("/logout")
                 .permitAll()
                 .and()
-                .headers().frameOptions().disable();
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().disable();
     }
 
     @Override

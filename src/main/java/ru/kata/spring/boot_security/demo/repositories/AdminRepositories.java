@@ -11,4 +11,6 @@ public interface AdminRepositories extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.name = ?1")
     Optional<User> findByName(String name);
 
+    @Override
+    Optional<User> findById(Integer integer);
 }

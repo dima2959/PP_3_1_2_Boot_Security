@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -36,6 +39,7 @@ public class User {
 
     @Column(name = "password")
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany
@@ -57,6 +61,14 @@ public class User {
     public User(String name, String password, List<Role> roles){
         this.name = name;
         this.password = password;
+        this.roles = roles;
+    }
+
+    public User(int id, String name, int age, String mail, List<Role> roles) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.mail = mail;
         this.roles = roles;
     }
 
