@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.services.AdminServices;
+import ru.kata.spring.boot_security.demo.services.UserServices;
 import ru.kata.spring.boot_security.demo.util.*;
 
 import javax.validation.Valid;
@@ -16,20 +16,20 @@ import java.util.List;
 @RequestMapping("/api")
 public class AdminRESTController {
 
-    private final AdminServices adminServices;
+    private final UserServices userServices;
 
-    public AdminRESTController(AdminServices adminServices) {
-        this.adminServices = adminServices;
+    public AdminRESTController(UserServices userServices) {
+        this.userServices = userServices;
     }
 
     @GetMapping("/users")
     public List<User> getAllUsers(){
-        return adminServices.getAllUsers();
+        return userServices.getAllUsers();
     }
 
     @GetMapping("/user/{id}")
     public User getUserById(@PathVariable int id){
-        return adminServices.getUser(id);
+        return userServices.getUser(id);
     }
 
     @PostMapping("/user")
@@ -40,7 +40,7 @@ public class AdminRESTController {
             throw new UserNotCreatedException(createErrorMessage(bindingResult));
         }
 
-        adminServices.createUser(user);
+        userServices.createUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -52,14 +52,14 @@ public class AdminRESTController {
             throw new UserErrorUpdateException(createErrorMessage(bindingResult));
         }
 
-        adminServices.updateUser(user);
+        userServices.updateUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
     public ResponseEntity<HttpStatus> deleteUser(@RequestBody User user){
 
-        adminServices.deleteUser(user.getId());
+        userServices.deleteUser(user.getId());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

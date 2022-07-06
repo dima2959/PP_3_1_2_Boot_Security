@@ -2,7 +2,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="newUser">
 
-
     <table class="table table-light border">
         <tr>
             <td class="border border-bottom"><b class="fs-5">Add new user</b></td>
@@ -10,38 +9,27 @@
         <tr>
             <td class="bg-white text-center">
 
-                <form id="newUserForm" th:method="POST" th:action="@{/admin/}" th:object="${user}">
+                <form id="newUserForm" th:method="POST" >
                     <div class="row g-2 justify-content-center">
 
                         <div class="fw-bold">User name</div>
                         <div class="col-sm-5">
-                            <input  class="form-control" type="text" th:field="*{name}" id="name">
-                            <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('name')}"
-                                 th:errors="*{name}"></div>
+                            <input  class="form-control" type="text" name="name">
                         </div>
 
                         <div class="fw-bold">Age</div>
                         <div class="col-sm-5">
-                            <input class="form-control" type="text"
-                                   th:field="*{age}" id="age">
-                            <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('age')}"
-                                 role="alert" th:errors="*{age}">
-
-                            </div>
+                            <input class="form-control" type="text" name="age">
                         </div>
 
                         <div class="fw-bold">Email</div>
                         <div class="col-sm-5">
-                            <input class="form-control" type="text" th:field="*{mail}" id="mail">
-                            <div class="p-2 alert alert-warning" th:if="${#fields.hasErrors('mail')}"
-                                 th:errors="*{mail}"></div>
+                            <input class="form-control" type="text" name="mail">
                         </div>
 
                         <div class="fw-bold">Password</div>
                         <div class="col-sm-5">
-                            <input class="form-control" type="password" th:field="*{password}" id="password">
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}"
-                                 th:errors="*{password}"></div>
+                            <input class="form-control" type="password" name="password">
                         </div>
 
                         <div class="fw-bold">
@@ -60,11 +48,9 @@
                         <div>
                             <input id="sendUserForm" data-form-id="newUserForm" class="btn btn-success" type="button" value="Add new user">
                         </div>
-                        <div class="col-sm-5 alert" role="alert" th:id="error"></div>
+                        <div class="col-sm-5 alert" role="alert" th:id="errorPOST"></div>
                     </div>
                 </form>
-
-
 
             </td>
         </tr>

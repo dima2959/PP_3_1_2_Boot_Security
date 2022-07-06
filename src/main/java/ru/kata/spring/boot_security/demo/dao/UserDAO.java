@@ -19,6 +19,4 @@ public interface UserDAO {
 
     Optional<User> findByName(String name);
 
-
-
 }

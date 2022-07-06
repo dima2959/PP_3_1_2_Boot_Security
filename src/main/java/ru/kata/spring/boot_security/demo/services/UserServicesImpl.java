@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class AdminServicesImpl implements AdminServices {
+public class UserServicesImpl implements UserServices {
 
     private final UserDAO userDAO;
     private final WebSecurityConfig encoderConfig;
 
-    public AdminServicesImpl(UserDAO userDAO, WebSecurityConfig encoderConfig) {
+    public UserServicesImpl(UserDAO userDAO, WebSecurityConfig encoderConfig) {
         this.userDAO = userDAO;
         this.encoderConfig = encoderConfig;
     }
@@ -46,7 +46,7 @@ public class AdminServicesImpl implements AdminServices {
     @Transactional
     public void updateUser(User user){
 
-        if(user.getPassword()==null){
+        if(user.getPassword().isEmpty()){
             user.setPassword(userDAO.getUser(user.getId()).getPassword());
         }else {
             user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));

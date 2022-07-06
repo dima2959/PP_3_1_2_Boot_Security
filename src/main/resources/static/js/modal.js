@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const editModal = document.getElementById('editModal')
 const submit = document.getElementById("sendUserForm");
 
+
 editModal.addEventListener('show.bs.modal', function (event) {
 
     var button = event.relatedTarget
@@ -14,23 +15,29 @@ editModal.addEventListener('show.bs.modal', function (event) {
 
     if (del=="true"){
         document.getElementById('ModalLabel').innerHTML = 'Delete user';
+        for (let elements of document.getElementsByClassName('form-control')) {
+            elements.setAttribute('readonly', 'true');
+        }
+        document.getElementById('deleteButton').style.display = 'block';
+        document.getElementById('editButton').style.display = 'none';
+
     }else{
         document.getElementById('ModalLabel').innerHTML = 'Edit user';
+        for (let elements of document.getElementsByClassName('form-control')) {
+            elements.removeAttribute('readonly');
+        }
+        document.getElementById('deleteButton').style.display = 'none';
+        document.getElementById('editButton').style.display = 'block';
     }
 
-    document.getElementById('myIframe').src = 'http://localhost:8080/admin/' + id;
+    getUser(id);
 
-})
-
-editModal.addEventListener('hidden.bs.modal', function (event) {
-    getAllUsers();
 })
 
 function closeEditModal() {
     bootstrap.Modal.getInstance(editModal).hide()
 }
 
-// ------ Navigation --------
 
 users.onclick = function() {
     boxesDisplayNone();
@@ -38,11 +45,22 @@ users.onclick = function() {
     boxAndFolderSetActive('users');
 };
 
+
 newUser.onclick = function() {
     boxesDisplayNone();
     foldersActiveOff();
     boxAndFolderSetActive('newUser');
+
+    for (let elements of document.getElementsByClassName('form-control')) {
+        elements.removeAttribute('readonly');
+    }
+
+    var divError = document.getElementById('errorPOST');
+    divError.classList.remove('alert-success');
+    divError.classList.remove('alert-danger');
+    divError.innerHTML = '';
 };
+
 
 function foldersActiveOff(){
     let elements = document.getElementsByName('folder')
@@ -51,18 +69,20 @@ function foldersActiveOff(){
     }
 }
 
+
 function boxesDisplayNone(){
     let elements = document.getElementsByName('box')
     for( let i = 0; i < elements.length; i++){
         elements[i].style.display = 'none';
     }
 }
+
+
 function boxAndFolderSetActive(name){
     document.getElementById(name + 'Box').style.display = 'block';
     document.getElementById(name).classList.add("active");
 }
 
-//----- REST -----
 
 function getAllUsers() {
 
@@ -70,8 +90,7 @@ function getAllUsers() {
         .then(
             function(response) {
                 if (response.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                        response.status);
+                    console.log('Status Code: ' + response.status);
                     return;
                 }
 
@@ -90,7 +109,7 @@ function getAllUsers() {
                                         'data-bs-toggle="modal" data-bs-target="#editModal"' +
                                         'data-bs-delete="false"' +
                                         'type="button" value="Edit"></td>' +
-                            '<td><input class="btn btn-danger" data-bs-id="' + data[i].id + '/delete"' +
+                            '<td><input class="btn btn-danger" data-bs-id="' + data[i].id + '"' +
                                         'data-bs-delete="true"' +
                                         'data-bs-toggle="modal" data-bs-target="#editModal"' +
                                         'type="submit" value="Delete"></td>'+
@@ -104,6 +123,7 @@ function getAllUsers() {
         )
 }
 
+
 function rolesToString(roles) {
 
     var result = ''
@@ -114,15 +134,18 @@ function rolesToString(roles) {
     return result
 }
 
-const toJson = function() {
 
+const submitNewUserJson = function() {
     const formData = new FormData(document.getElementById("newUserForm"));
+    sendJson(createJson(formData),'POST');
+}
 
+
+function createJson(formData){
     let object = {};
     var cnt = 0;
 
     for (var pair of formData.entries()) {
-
         if(pair[0]=='roles'){
             if(!object['roles']){
                 object['roles'] = [];
@@ -133,40 +156,85 @@ const toJson = function() {
         else{
             object[pair[0]] = pair[1];
         }
-
     }
+    return JSON.stringify(object);
+}
 
-    let json = JSON.stringify(object);
 
-    send(json);
-
-};
-
-async function send(data) {
+async function sendJson(data, sendMethod) {
 
     const response = await fetch('http://localhost:8080/api/user', {
-        method: 'POST',
+        method: sendMethod,
         body: data,
         headers: {'Content-Type': 'application/json'}
     });
     const json = await response.json();
 
-    var divError = document.getElementById('error');
+    var divError = document.getElementById('error' + sendMethod);
 
-    if(response.status!=200){
-        divError.classList.remove('alert-success')
-        divError.classList.add('alert-danger')
-        divError.innerHTML = json.error;
-    }else{
-        divError.classList.remove('alert-danger')
-        divError.classList.add('alert-success')
-        divError.innerHTML = 'User successfully added';
-        document.getElementById('newUserForm').reset();
+    if(divError != null) {
+
+        if (response.status != 200) {
+            divError.classList.remove('alert-success')
+            divError.classList.add('alert-danger')
+            divError.innerHTML = json.error;
+        } else {
+            divError.classList.remove('alert-danger')
+            divError.classList.add('alert-success')
+            divError.innerHTML = 'User successfully added';
+            document.getElementById('newUserForm').reset();
+        }
     }
 
-    if(response.status==200) {
-        getAllUsers();
+    getAllUsers();
+}
+
+
+submit.addEventListener("click", submitNewUserJson);
+
+
+function getUser(id){
+
+    fetch('http://localhost:8080/api/user/' + id)
+        .then(
+            function(response) {
+                if (response.status !== 200) {
+                    console.log('Status Code: ' + response.status);
+                    return;
+                }
+
+                response.json().then(function(data) {
+
+                    document.getElementById("editUserForm").reset();
+                    resetSelectElement(document.getElementById('selectRole'));
+
+                    document.getElementById("id").value = data.id;
+                    document.getElementById("name").value = data.name;
+                    document.getElementById("age").value = data.age;
+                    document.getElementById("mail").value = data.mail;
+
+                    data.roles.forEach((value, index) => document.getElementById(value.name)
+                                                                        .setAttribute('selected', ''))
+                });
+            }
+        )
+}
+
+
+function resetSelectElement(selectElement) {
+    var options = selectElement.options;
+    for (var i = 0; i < options.length; i++) {
+        options[i].removeAttribute('selected');
     }
 }
 
-submit.addEventListener("click", toJson);
+editButton.onclick = function () {
+    const formData = new FormData(document.getElementById("editUserForm"));
+    sendJson(createJson(formData),'PATCH');
+}
+
+deleteButton.onclick = function () {
+    const formData = new FormData(document.getElementById("editUserForm"));
+    sendJson(createJson(formData),'DELETE');
+    closeEditModal()
+}
