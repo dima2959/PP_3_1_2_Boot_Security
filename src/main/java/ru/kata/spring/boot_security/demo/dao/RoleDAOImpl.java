@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.DAO;
+package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.Role;

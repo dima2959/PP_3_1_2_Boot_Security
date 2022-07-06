@@ -1,9 +1,9 @@
-package ru.kata.spring.boot_security.demo.DAO;
+package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repositories.AdminRepositories;
+import ru.kata.spring.boot_security.demo.repositories.UserRepositories;
 import ru.kata.spring.boot_security.demo.util.UserErrorDeleteException;
 import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
@@ -11,39 +11,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminDAOImpl implements AdminDAO {
+public class UserDAOImpl implements UserDAO {
 
-    private final AdminRepositories adminRepositories;
+    private final UserRepositories userRepositories;
 
-    public AdminDAOImpl(AdminRepositories adminRepositories) {
-        this.adminRepositories = adminRepositories;
+    public UserDAOImpl(UserRepositories userRepositories) {
+        this.userRepositories = userRepositories;
     }
 
     @Override
     public List<User> getAllUsers() {
-        return adminRepositories.findAll();
+        return userRepositories.findAll();
     }
 
     @Override
     public void createUser(User user) {
-        adminRepositories.save(user);
+        userRepositories.save(user);
     }
 
     @Override
     public User getUser(int id) {
-        Optional<User> user = adminRepositories.findById(id);
+        Optional<User> user = userRepositories.findById(id);
         return user.orElseThrow(UserNotFoundException::new);
     }
 
     @Override
     public void updateUser(User user) {
-            adminRepositories.save(user);
+            userRepositories.save(user);
     }
 
     @Override
     public void deleteUser(int id) {
         try {
-        adminRepositories.deleteById(id);
+        userRepositories.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new UserErrorDeleteException();
         }
@@ -51,7 +51,7 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
     public Optional<User> findByName(String name) {
-        return adminRepositories.findByName(name);
+        return userRepositories.findByName(name);
     }
 
 

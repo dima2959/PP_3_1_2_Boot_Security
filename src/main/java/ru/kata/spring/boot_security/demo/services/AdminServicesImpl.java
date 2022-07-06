@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.DAO.AdminDAO;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.configs.WebSecurityConfig;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.util.UserNotCreatedException;
@@ -14,16 +14,16 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class AdminServicesImpl implements AdminServices {
 
-    private final AdminDAO adminDAO;
+    private final UserDAO userDAO;
     private final WebSecurityConfig encoderConfig;
 
-    public AdminServicesImpl(AdminDAO adminDAO, WebSecurityConfig encoderConfig) {
-        this.adminDAO = adminDAO;
+    public AdminServicesImpl(UserDAO userDAO, WebSecurityConfig encoderConfig) {
+        this.userDAO = userDAO;
         this.encoderConfig = encoderConfig;
     }
 
     public List<User> getAllUsers(){
-        return adminDAO.getAllUsers();
+        return userDAO.getAllUsers();
     }
 
     @Transactional
@@ -35,11 +35,11 @@ public class AdminServicesImpl implements AdminServices {
             throw new UserNotCreatedException("Passport field is not empty");
         }
 
-        adminDAO.createUser(user);
+        userDAO.createUser(user);
     }
 
     public User getUser(int id){
-       User user = adminDAO.getUser(id);
+       User user = userDAO.getUser(id);
        return user;
     }
 
@@ -47,22 +47,22 @@ public class AdminServicesImpl implements AdminServices {
     public void updateUser(User user){
 
         if(user.getPassword()==null){
-            user.setPassword(adminDAO.getUser(user.getId()).getPassword());
+            user.setPassword(userDAO.getUser(user.getId()).getPassword());
         }else {
             user.setPassword(encoderConfig.getPasswordEncoder().encode(user.getPassword()));
         }
 
-        adminDAO.updateUser(user);
+        userDAO.updateUser(user);
     }
 
     @Transactional
     public void deleteUser(int id){
-        adminDAO.deleteUser(id);
+        userDAO.deleteUser(id);
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        return adminDAO.findByName(name);
+        return userDAO.findByName(name);
     }
 
 }

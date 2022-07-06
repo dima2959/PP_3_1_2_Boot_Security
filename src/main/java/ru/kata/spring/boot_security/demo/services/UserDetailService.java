@@ -4,22 +4,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.DAO.AdminDAO;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.security.UserSecurityDetails;
 
 @Service
 public class UserDetailService implements UserDetailsService {
 
-    private final AdminDAO adminDAO;
+    private final UserDAO userDAO;
 
-    public UserDetailService(AdminDAO adminDAO) {
-        this.adminDAO = adminDAO;
+    public UserDetailService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return new UserSecurityDetails(adminDAO.findByName(username).get());
+        return new UserSecurityDetails(userDAO.findByName(username).get());
     }
 }
 

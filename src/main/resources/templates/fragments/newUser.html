@@ -10,7 +10,7 @@
         <tr>
             <td class="bg-white text-center">
 
-                <form th:method="POST" th:action="@{/admin/}" th:object="${user}">
+                <form id="newUserForm" th:method="POST" th:action="@{/admin/}" th:object="${user}">
                     <div class="row g-2 justify-content-center">
 
                         <div class="fw-bold">User name</div>
@@ -48,8 +48,8 @@
                             Roles
                         </div>
                         <div class="col-sm-5">
-                            <select multiple class="form-control" name="roles">
-                                <option
+                            <select multiple class="form-control" name=roles>
+                                <option th:name="${'roles[' + role.id + ']'}"
                                         th:each="role : ${roles}"
                                         th:text="${role.name}"
                                         th:value="${role.id}"
@@ -58,10 +58,14 @@
                             </select>
                         </div>
                         <div>
-                            <input  class="btn btn-success" type="submit" value="Add new user">
+                            <input id="sendUserForm" data-form-id="newUserForm" class="btn btn-success" type="button" value="Add new user">
                         </div>
+                        <div class="col-sm-5 alert" role="alert" th:id="error"></div>
                     </div>
                 </form>
+
+
+
             </td>
         </tr>
     </table>
