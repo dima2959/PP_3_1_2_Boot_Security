@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container" style="max-width: 350px;">
+    <div class="row justify-content-center align-items-center">
+        <form th:method="PUT" th:action="@{/admin/{id}/update (id=${user.getId()})}" th:object="${user}">
+            <br>
+            <div class="form-group">
+                <label for="name">First name: </label>
+                <input type="text" class="form-control" th:field="*{name}" id="name"/>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Last name: </label>
+                <label for="lastName"></label><input type="text" class="form-control" th:field="*{lastName}" id="lastName"/>
+            </div>
+
+            <div class="form-group">
+                <label for="email">e-mail: </label>
+                <input type="email" class="form-control" th:field="*{email}" id="email" aria-describedby="emailHelp"/>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password: </label>
+                <input type="text" name="password" id="password" placeholder="password"/>
+            </div>
+
+            <div class="form-group">
+                <label for="roles">Сhoose roles: </label>
+                <select name="rolesList" id="roles" size="2" multiple>
+                    <option th:value="ROLE_ADMIN" th:text="ADMIN"></option>
+                    <option th:value="ROLE_USER" th:text="USER"></option>
+                </select>
+            </div>
+
+            <div class="col text-center">
+                <input type="submit" class="btn btn-primary" value="Update"/>
+            </div>
+
+            <div class="col text-center">
+                <a class="btn btn-group-lg" href="/admin">Cancel</a>
+            </div>
+
+            <div class="col text-center">
+                <a class="btn btn-group-lg" th:href="@{/logout}">Logout</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

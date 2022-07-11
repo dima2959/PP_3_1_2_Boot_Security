@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<h1 class="h1 text-primary text-center">Profile</h1>
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th> First Name</th>
+                <th> Last Name</th>
+                <th> e-mail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:utext="${user.getName()}">name</td>
+                <td th:utext="${user.getLastName()}">lastName</td>
+                <td th:utext="${user.getEmail()}">e-mail</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <a class="btn btn-primary center-block" style="max-width: 150px;" th:href="@{/logout}">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>
