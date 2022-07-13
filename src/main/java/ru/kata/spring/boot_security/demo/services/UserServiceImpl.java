@@ -61,4 +61,20 @@ public class UserServiceImpl implements UserService {
     public User findByName(String name) {
         return userRepository.findByName(name);
     }
+
+    @Override
+    @Transactional
+    public void update(User user, String[] roles) {
+        User userToBeUpdated = userRepository.getById(user.getId());
+
+        if (user.getPassword().equals("")) {
+            user.setPassword(userToBeUpdated.getPassword());
+        } else{
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setRoles(Arrays.stream(roles)
+                .map(roleService::findByName)
+                .collect(Collectors.toSet()));
+        userRepository.save(user);
+    }
 }

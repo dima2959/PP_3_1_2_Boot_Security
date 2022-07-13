@@ -29,28 +29,21 @@ public class MainController {
     }
 
     @GetMapping("/admin")
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
+        User user = userService.findByName(principal.getName());
+        User userNew = new User();
         model.addAttribute("users", userService.index());
+        model.addAttribute("user", user);
+        model.addAttribute("userNew", userNew);
         return "admin/index";
     }
 
-    @GetMapping("/admin/new")
-    public String newUser(User user) {
-        return "admin/new";
-    }
-
-    @PostMapping("/admin/new")
+    @PostMapping("/admin/save")
     public String create(@ModelAttribute("user") User user,
                          @RequestParam(value = "rolesList") String [] roles,
                          @ModelAttribute("password") String password) {
         userService.save(user, roles, password);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.show(id));
-        return "admin/edit";
     }
 
     @PutMapping("/admin/{id}/update")
